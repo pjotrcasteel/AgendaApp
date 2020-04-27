@@ -38,7 +38,7 @@ namespace AgendaApp.API.Controllers
             if (!await ClientExists(clientId))
                 return NotFound();
 
-            var appointment = await appointmentService.GetAppointment(appointmentId);
+            var appointment = await appointmentService.GetAppointment(clientId, appointmentId);
 
             if (appointment == null)
             {
@@ -55,13 +55,13 @@ namespace AgendaApp.API.Controllers
                 return NotFound();
 
             var appointmentEntity = mapper.Map<Appointment>(appointment);
-            var appointmentIdReturn = await appointmentService.Create(clientId, appointmentEntity);
+            var (appointmentIdReturn, _) = await appointmentService.Create(clientId, appointmentEntity);
 
             return CreatedAtRoute("GetAppointmentForClient", new { clientId, appointmentId = appointmentIdReturn }, mapper.Map<AppointmentDto>(appointmentEntity));
         }
 
         [HttpPut("{appointmentId}")]
-        public async Task<ActionResult<int>> UpdateAppointmentForClient(Guid clientId, Guid appointmentId, [FromBody]AppointmentUDto appointment)
+        public async Task<ActionResult> UpdateAppointmentForClient(Guid clientId, Guid appointmentId, [FromBody]AppointmentUDto appointment)
         {
             if (!await ClientExists(clientId))
                 return NotFound();
@@ -75,9 +75,9 @@ namespace AgendaApp.API.Controllers
 
             mapper.Map(appointment, appointmentEntity);
 
-            var (_, amountOfChanges) = await appointmentService.Update(appointmentEntity);
+            await appointmentService.Update(appointmentEntity);
 
-            return Ok(amountOfChanges);
+            return Ok();
         }
 
         [HttpDelete("{appointmentId}")]

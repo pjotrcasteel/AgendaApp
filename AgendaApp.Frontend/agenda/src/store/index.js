@@ -52,12 +52,14 @@ export default new Vuex.Store({
       const config = { headers: { 'Content-Type': 'application/json' } };
       Axios.put(`/api/clients/${clientId}/appointments/${appointmentId}`, toUpdateAppointment, config)
         .then(() => commit('updateAppointment', [toUpdateAppointment, appointmentId]))
+        // todo: print to screen
         .catch(console.error);
     },
     deleteAppointment({ commit }, [clientId, appointmentId]) {
       const config = { headers: { 'Content-Type': 'application/json' } };
       Axios.delete(`/api/clients/${clientId}/appointments/${appointmentId}`, config)
         .then(() => commit('removeAppointment', appointmentId))
+        // todo: print to screen
         .catch(console.error);
     },
   },

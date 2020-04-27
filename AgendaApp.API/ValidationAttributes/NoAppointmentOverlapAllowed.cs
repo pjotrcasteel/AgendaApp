@@ -1,7 +1,6 @@
 ﻿using AgendaApp.API.Models;
-using System;
+using AgendaApp.API.Models.Extensions;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
 
 namespace AgendaApp.API.ValidationAttributes
 {
@@ -9,19 +8,13 @@ namespace AgendaApp.API.ValidationAttributes
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            var client = (ClientCDto)validationContext.ObjectInstance;
+            if (!(validationContext.ObjectInstance is ClientCDto client))
+                return new ValidationResult("Unable to validate due to error in casting", new[] { "ClientCDto" });
 
-            var endPrior = DateTime.MinValue;
-            foreach (var appointment in client.Appointments.OrderBy(a => a.Start))
-            {
-                if (appointment.Start > (appointment.End ?? appointment.Start.AddHours(1)))
-                    return new ValidationResult("Invalid | Startdate cannot be after enddate ", new[] { "ClientCDto" });
-                if (appointment.Start < endPrior)
-                    return new ValidationResult($"Overlap | Startdate: {appointment.Start} cannot be before enddate: {endPrior}", new[] { "ClientCDto" });
-                endPrior = appointment.End ?? appointment.Start.AddHours(1);
-            }
-
-            return ValidationResult.Success;
+            var (valid, message) = client.Appointments.AssertNoOverlap();
+            return valid 
+                ? ValidationResult.Success
+                : new ValidationResult(message, new[] { "ClientCDto.ICollection<AppointmentCDto>" });
         }     
     }
 }

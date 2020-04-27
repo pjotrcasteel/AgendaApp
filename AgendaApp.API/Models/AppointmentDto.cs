@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AgendaApp.API.Types;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace AgendaApp.API.Models
@@ -15,6 +16,7 @@ namespace AgendaApp.API.Models
         public string Title { get; set; }
         public bool IsFullDay { get; set; }
         public string Type { get; set; }
+        public AppointmentStatus Status { get; set; }
 
         public Guid ClientId { get; set; }
     }
