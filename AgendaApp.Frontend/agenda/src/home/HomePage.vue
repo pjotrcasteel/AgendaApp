@@ -31,7 +31,7 @@ export default {
         {
           key: 'appointmentTodayCount',
           label: 'Appointments today',
-          sortable: false,
+          sortable: true,
         },
       ],
     };

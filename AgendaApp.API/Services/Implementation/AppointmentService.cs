@@ -1,6 +1,7 @@
 ﻿using AgendaApp.API.Entities;
 using AgendaApp.API.Repositories.Interface;
 using AgendaApp.API.Services.Interface;
+using AgendaApp.API.Types;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -17,12 +18,9 @@ namespace AgendaApp.API.Services.Implementation
             this.clientRepository = clientRepository;
         }
 
-        public async Task<Guid> Create(Guid clientId, Appointment appointmentEntity)
-        {
-            appointmentEntity.ClientId = clientId;
-            return await repository.Create(appointmentEntity);
-        }
-
+        public async Task<(Guid, AppointmentStatus)> Create(Guid clientId, Appointment appointmentEntity)
+            => await repository.CreateWithCheck(clientId, appointmentEntity);
+        
         public async Task<bool> ClientExists(Guid clientId)
             => await clientRepository.ClientExists(clientId);
 
@@ -35,8 +33,8 @@ namespace AgendaApp.API.Services.Implementation
         public async Task<Appointment> GetAppointment(Guid clientId, Guid appointmentId)
             => await repository.Get(clientId, appointmentId);
 
-        public async Task<(Guid, int)> Update(Appointment appointment)
-            => await repository.Update(appointment);
+        public async Task Update(Appointment appointment)
+            => await repository.UpdateWithCheck(appointment);
 
         public async Task<bool> Delete(Guid ClientId, Guid AppointmentId)
             => await repository.Delete(ClientId, AppointmentId);

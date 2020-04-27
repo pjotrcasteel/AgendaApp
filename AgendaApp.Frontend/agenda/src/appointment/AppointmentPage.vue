@@ -6,6 +6,9 @@
 
 <template>
   <div class="Appointments col-md-12">
+    <b-form-group id="input-group-allow">
+      <b-form-checkbox v-model="allowOverlap" switch>Allow appointment overlap</b-form-checkbox>
+    </b-form-group>
     <FullCalendar
       class="agenda-app-calendar"
       ref="fullCalendar"
@@ -104,6 +107,7 @@ export default {
   },
   data() {
     return {
+      allowOverlap: false,
       newAppointment: {
         title: '',
         start: null,
@@ -154,12 +158,15 @@ export default {
   methods: {
     getEvents(appointment) {
       this.calendarEvents.push({
+        overlap: this.allowOverlap,
         id: appointment.id,
         title: appointment.title,
         start: appointment.start,
         end: appointment.end,
         allDay: appointment.isFullDay,
-        borderColor: appointment.type,
+        borderColor: appointment.status === 1 ? 'orange' : 'none',
+        backgroundColor: appointment.status === 1 ? 'white' : appointment.type,
+        textColor: appointment.status === 1 ? 'orange' : 'none',
       });
     },
     gotoPast() {

@@ -1,4 +1,5 @@
 ﻿using AgendaApp.API.Entities;
+using AgendaApp.API.Types;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -11,8 +12,8 @@ namespace AgendaApp.API.Services.Interface
         Task<IEnumerable<Appointment>> GetAppointments(Guid clientId);
         Task<Appointment> GetAppointment(Guid appointmentId);
         Task<Appointment> GetAppointment(Guid clientId, Guid appointmentId);
-        Task<Guid> Create(Guid clientId, Appointment appointmentEntity);
-        Task<(Guid, int)> Update(Appointment appointmentEntity);
+        Task<(Guid, AppointmentStatus)> Create(Guid clientId, Appointment appointmentEntity);
+        Task Update(Appointment appointmentEntity);
         Task<bool> Delete(Guid ClientId, Guid AppointmentId);
     }
 }
