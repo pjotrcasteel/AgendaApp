@@ -1,6 +1,6 @@
 # AgendaApp
 Small Web Api + App created of the weekend.
-Because I could find any non-production application code to show as review, I have created this app over the weekend instead.
+Because I couldn't find any non-production application code to show as review, I have created this app over the weekend instead.
 I used a combination of .NET core 3.0 (Web Api - RESTfull) and the latest version of Vue (front-end app)
 
 How use it:
